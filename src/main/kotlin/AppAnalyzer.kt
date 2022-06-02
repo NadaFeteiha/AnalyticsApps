@@ -57,4 +57,11 @@ class AppAnalyzer {
             null
         }
     }
+
+    fun getLargestAppSizeByCompanyName(apps: List<App>,companyName:String): App? {
+        return if (apps.isNotEmpty() && companyName.isNotEmpty()) {
+           val largestApp = apps.filter { it.company.contains(companyName.trim(), true) }
+            findLargestApps(largestApp, 1)?.first()
+        } else null
+    }
 }
