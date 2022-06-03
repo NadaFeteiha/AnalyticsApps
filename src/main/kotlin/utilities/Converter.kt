@@ -18,7 +18,7 @@ fun String.stringToDate(): Date {
     return SimpleDateFormat(Constant.DATE_FORMAT).parse(this)
 }
 
-fun String.convertToMegaByte(): Long? {
+fun String.megaByteConverter(): Long? {
     var result = ""
     for (c in this) {
         result += if (c.isDigit())
