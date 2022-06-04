@@ -515,5 +515,64 @@ internal class AppAnalyzerTest {
         // then check the top number of installed apps in the list.
         assertNull(result)
     }
-    
+    //point 7 : the largest apps size developed by "Meta platforms"
+
+    @Test // 7-1
+    fun should_ReturnNumApp_When_ValidCompanyInput() {
+        // given a list of apps.
+        apps = setList()
+        // when the company name is completely valid.
+        val companyName = "Meta platforms"
+        val result = appAnalyzer.findAppDevelopedByGivenCompany(apps, companyName)
+        // then check the number of apps developed by the company.
+        assertEquals(2, result)
+    }
+
+    @Test //7-2
+    fun should_ReturnNumApp_When_CompanyNameContainsSpace() {
+        //given a list of apps
+        apps = setList()
+        //when the company name contains space
+        val companyName = "Meta platforms "
+        val result = appAnalyzer.findAppDevelopedByGivenCompany(apps, companyName)
+        //then check the number of apps developed by company
+        assertEquals(2, result)
+
+    }
+
+    @Test // 7-3
+    fun should_ReturnNumOfApps_When_CompanyNameContainsDots() {
+        // given a list of apps.
+        apps = setList()
+        // when the company name contains dots and the company name is Google.
+        val companyName = ".Meta platforms."
+        val result = appAnalyzer.findAppDevelopedByGivenCompany(apps, companyName)
+        // then check the number of apps developed by the company.
+        assertEquals(2, result)
+    }
+
+
+    @Test //7-4
+    fun should_ReturnNumApp_When_companyNameInUpperCase() {
+        //given app list
+        apps = setList()
+        // when the company name in upper case
+        val companyName = "META PLATFORMS"
+        val result = appAnalyzer.findAppDevelopedByGivenCompany(apps, companyName)
+        // then check the num developed by company name
+        assertEquals(2, result)
+
+    }
+
+    @Test //7-5
+    fun Should_ReturnNumOfApps_When_CompanyNameIsNotFound() {
+        //given  a list of app
+        apps=setList()
+        //when the  company name is not found
+        val companyName = "unkown"
+        val result = appAnalyzer.findAppDevelopedByGivenCompany(apps, companyName)
+        //given check the num of app
+        assertEquals(0,result)
+    }
+
 }
