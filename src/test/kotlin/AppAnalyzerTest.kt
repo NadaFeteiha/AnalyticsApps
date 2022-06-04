@@ -218,7 +218,7 @@ internal class AppAnalyzerTest {
     }
 
     @Test // 2-3
-    fun should_ReturnZero_When_CategoryContainsDots() {
+    fun should_ReturnZeroPercentageOfGivenCategory_When_CategoryContainsDots() {
         // given a list of apps.
         apps = setList()
         // when the category contains dots and the category is medical.
@@ -273,7 +273,7 @@ internal class AppAnalyzerTest {
     }
 
     @Test // 2-8
-    fun should_ReturnZeroOfCategory_When_CategoryIsNotFound() {
+    fun should_ReturnZeroPercentageOfCategory_When_CategoryIsNotFound() {
         // given a list of apps.
         apps = setList()
         // when the category is not found.
@@ -314,7 +314,7 @@ internal class AppAnalyzerTest {
     * */
 
     @Test // 4-1
-    fun should_ReturnPercentageOfAppsRunningOnAndroidSpecificVersion_When_ValidAppListAndVersion() {
+    fun should_ReturnPercentageAppsRunningOnSpecificAndroid_When_ValidAppListAndVersion() {
         // given a list of apps.
         apps = setList()
         // when the app list is valid and android version is valid.
@@ -325,7 +325,7 @@ internal class AppAnalyzerTest {
     }
 
     @Test // 4-2
-    fun should_ReturnPercentageOfAppsRunningOnAndroidSpecificVersion_When_AndroidVersionIsPositive() {
+    fun should_ReturnPercentageAppsRunningOnSpecificAndroid_When_AndroidVersionIsPositive() {
         // given a list of apps.
         apps = setList()
         // when the app list is valid and version is positive.
@@ -336,7 +336,7 @@ internal class AppAnalyzerTest {
     }
 
     @Test // 4-3
-    fun should_ReturnZero_When_AndroidSpecificVersionIsNotFound() {
+    fun should_ReturnZeroOfPercentageAppRunningOnSpecificAndroid_When_AndroidSpecificVersionIsNotFound() {
         // given a list of apps.
         apps = setList()
         // when the app list is valid and version is not found.
@@ -347,7 +347,7 @@ internal class AppAnalyzerTest {
     }
 
     @Test // 4-4
-    fun should_ReturnNullOfPercentage_When_AppListIsEmpty() {
+    fun should_ReturnNullOfPercentageAppRunningOnSpecificAndroid_When_AppListIsEmpty() {
         // given an empty list of apps.
         apps
         // when the app list is empty and version is valid.
@@ -358,7 +358,7 @@ internal class AppAnalyzerTest {
     }
 
     @Test // 4-5
-    fun should_ReturnNullOfPercentage_When_AndroidVersionIsZero() {
+    fun should_ReturnNullOfPercentageAppRunningOnSpecificAndroid_When_AndroidVersionIsZero() {
         // given a list of apps.
         apps = setList()
         // when the app list is valid and version is zero.
@@ -369,7 +369,7 @@ internal class AppAnalyzerTest {
     }
 
     @Test // 4-6
-    fun should_ReturnNullOfPercentage_When_AndroidVersionIsNegative() {
+    fun should_ReturnNullOfPercentageAppRunningOnSpecificAndroid_When_AndroidVersionIsNegative() {
         // given a list of apps.
         apps = setList()
         // when the app list is valid and version is negative.
@@ -444,7 +444,7 @@ internal class AppAnalyzerTest {
 
     /*
     * Point 6: The top installed apps.
-    * No. of test cases: 6
+    * No. of test cases: 5
     * */
 
     @Test // 6-1
@@ -460,17 +460,6 @@ internal class AppAnalyzerTest {
     }
 
     @Test // 6-2
-    fun should_ReturnNull_When_AppListIsEmpty() {
-        // given an empty list of apps.
-        apps = mutableListOf()
-        // when the app list is empty and range is valid.
-        val range = 1
-        val result = appAnalyzer.topAppInstall(apps, range)
-        // then check the top number of installed apps in the list.
-        assertNull(result)
-    }
-
-    @Test // 6-3
     fun should_ReturnNullOfTopInstallApps_When_RangeIsBiggerThanAppListSize() {
         // given a list of apps.
         apps = setList()
@@ -481,7 +470,7 @@ internal class AppAnalyzerTest {
         assertNull(result)
     }
 
-    @Test // 6-4
+    @Test // 6-3
     fun should_ReturnNullOfTopInstallApps_When_AppListIsEmpty() {
         // given a null list of apps.
         apps
@@ -492,7 +481,7 @@ internal class AppAnalyzerTest {
         assertNull(result)
     }
 
-    @Test // 6-5
+    @Test // 6-4
     fun should_ReturnNullOfTopInstallApps_When_RangeIsNegative() {
         // given a list of apps.
         apps = setList()
@@ -503,7 +492,7 @@ internal class AppAnalyzerTest {
         assertNull(result)
     }
 
-    @Test // 6-6
+    @Test // 6-5
     fun should_ReturnNullOfTopInstallApps_When_RangeIsZero() {
         // given a list of apps.
         apps = setList()
@@ -520,7 +509,7 @@ internal class AppAnalyzerTest {
        * */
 
     @Test // 7-1
-    fun should_ReturnLargestApp_When_ValidCompanyInput() {
+    fun should_ReturnLargestAppForGivenCompany_When_ValidCompanyInput() {
         // given a list of apps.
         apps = setList()
         // when the company name is completely valid.
@@ -531,7 +520,7 @@ internal class AppAnalyzerTest {
     }
 
     @Test //7-2
-    fun should_ReturnLargestApp_When_CompanyNameContainsSpace() {
+    fun should_ReturnTheLargestAppForGivenCompany_When_CompanyNameContainsSpace() {
         //given a list of apps
         apps = setList()
         //when the company name contains space
@@ -542,7 +531,7 @@ internal class AppAnalyzerTest {
     }
 
     @Test //7-3
-    fun should_ReturnLargestApp_When_companyNameInUpperCase() {
+    fun should_ReturnForLargestAppForGivenCompany_When_CompanyNameInUpperCase() {
         //given app list
         apps = setList()
         // when the company name in upper case
@@ -552,14 +541,25 @@ internal class AppAnalyzerTest {
         assertEquals(apps[largestAmazonApp], result)
     }
 
-    @Test //7-5
-    fun should_ReturnNull_When_CompanyNameIsNotFound() {
+    @Test //7-4
+    fun should_ReturnNullForLargestAppForGivenCompany_When_CompanyNameIsNotFound() {
         //given  a list of app
         apps = setList()
         //when the  company name is not found
         val companyName = "unknown"
         val result = appAnalyzer.getLargestAppSizeByCompanyName(apps, companyName)
-        //given check the num of app
+        //then check
+        assertNull(result)
+    }
+
+    @Test //7-5
+    fun should_ReturnNullForLargestAppForGivenCompany_When_EmptyList() {
+        //given empty a list of app and valid company name
+        apps
+        val companyName = "Amazon"
+        //when search in empty list
+        val result = appAnalyzer.getLargestAppSizeByCompanyName(apps, companyName)
+        //then check
         assertNull(result)
     }
 
