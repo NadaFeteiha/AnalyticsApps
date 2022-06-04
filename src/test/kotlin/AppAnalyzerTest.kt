@@ -16,6 +16,7 @@ import java.util.*
    * 4. The percentage of apps running on android specific version.
    * 5. The largest apps by size.
    * 6. The top installed apps.
+   * 7. Tha the largest App in specific company
    *
    * Note: The (1-5 .. etc) that are below refers to:
    * left side is the point that will be tested.
@@ -27,6 +28,7 @@ internal class AppAnalyzerTest {
 
     private lateinit var appAnalyzer: AppAnalyzer
     private lateinit var apps: MutableList<App>
+
     /*
       * Indexes of the app list that define above.
       * We will use these indexes instead of the magic numbers.
@@ -35,6 +37,7 @@ internal class AppAnalyzerTest {
     private val adAppIndex = 1
     private val googlePhotoAppIndex = 2
     private val googleFilesAppIndex = 3
+    private val largestAmazonApp = 1
 
     /*
     * initialize the appAnalyzer class before all tests.
@@ -52,60 +55,55 @@ internal class AppAnalyzerTest {
         apps = mutableListOf()
     }
 
-
     /*
     * Setup list of four demo applications just to test the appAnalyzer.
     * */
-    private fun setList(testSet: Int = 0):MutableList<App> {
+    private fun setList(testSet: Int = 0): MutableList<App> {
         val appList = mutableListOf<App>()
-        when (testSet) {
-            0 -> {
-                appList.add(
-                    App(
-                        appName = "Book",
-                        company = "Amazon",
-                        category = "Libraries & Demo",
-                        updated = Date(2000, 5, 1),
-                        size = 6000,
-                        installs = 500000,
-                        requiresAndroid = 4.4
-                    )
-                )
-                appList.add(
-                    App(
-                        appName = "AD",
-                        company = "Amazon",
-                        category = "Libraries & Demo",
-                        updated = Date(2020, 1, 1),
-                        size = 30000,
-                        installs = 30,
-                        requiresAndroid = 9.0
-                    )
-                )
-                appList.add(
-                    App(
-                        appName = "Google Photo",
-                        company = "Google",
-                        category = "Libraries & Demo",
-                        updated = Date(2000, 1, 2),
-                        size = 50000,
-                        installs = 500,
-                        requiresAndroid = 6.0
-                    )
-                )
-                appList.add(
-                    App(
-                        appName = "Google Files",
-                        company = "Google",
-                        category = "Medical",
-                        updated = Date(2000, 1, 2),
-                        size = 5000,
-                        installs = 1000000,
-                        requiresAndroid = 9.0
-                    )
-                )
-            }
-        }
+        appList.add(
+            App(
+                appName = "Book",
+                company = "Amazon",
+                category = "Libraries & Demo",
+                updated = Date(2000, 5, 1),
+                size = 6000,
+                installs = 500000,
+                requiresAndroid = 4.4
+            )
+        )
+        appList.add(
+            App(
+                appName = "AD",
+                company = "Amazon",
+                category = "Libraries & Demo",
+                updated = Date(2020, 1, 1),
+                size = 30000,
+                installs = 30,
+                requiresAndroid = 9.0
+            )
+        )
+        appList.add(
+            App(
+                appName = "Google Photo",
+                company = "Google",
+                category = "Libraries & Demo",
+                updated = Date(2000, 1, 2),
+                size = 50000,
+                installs = 500,
+                requiresAndroid = 6.0
+            )
+        )
+        appList.add(
+            App(
+                appName = "Google Files",
+                company = "Google",
+                category = "Medical",
+                updated = Date(2000, 1, 2),
+                size = 5000,
+                installs = 1000000,
+                requiresAndroid = 9.0
+            )
+        )
         return appList
     }
 
@@ -167,7 +165,7 @@ internal class AppAnalyzerTest {
         val companyName = "UnKnownCompany"
         val result = appAnalyzer.findAppDevelopedByGivenCompany(apps, companyName)
         // then check the number of apps developed by the company.
-        assertEquals(0,result)
+        assertEquals(0, result)
     }
 
     @Test // 1-6
@@ -515,64 +513,54 @@ internal class AppAnalyzerTest {
         // then check the top number of installed apps in the list.
         assertNull(result)
     }
-    //point 7 : the largest apps size developed by "Meta platforms"
+
+    /*
+       * Point 7: the largest apps size developed by "Meta platforms"
+       * No. of test cases: 5
+       * */
 
     @Test // 7-1
-    fun should_ReturnNumApp_When_ValidCompanyInput() {
+    fun should_ReturnLargestApp_When_ValidCompanyInput() {
         // given a list of apps.
         apps = setList()
         // when the company name is completely valid.
-        val companyName = "Meta platforms"
-        val result = appAnalyzer.findAppDevelopedByGivenCompany(apps, companyName)
-        // then check the number of apps developed by the company.
-        assertEquals(2, result)
+        val companyName = "Amazon"
+        val result = appAnalyzer.getLargestAppSizeByCompanyName(apps, companyName)
+        // then check
+        assertEquals(apps[largestAmazonApp], result)
     }
 
     @Test //7-2
-    fun should_ReturnNumApp_When_CompanyNameContainsSpace() {
+    fun should_ReturnLargestApp_When_CompanyNameContainsSpace() {
         //given a list of apps
         apps = setList()
         //when the company name contains space
-        val companyName = "Meta platforms "
-        val result = appAnalyzer.findAppDevelopedByGivenCompany(apps, companyName)
-        //then check the number of apps developed by company
-        assertEquals(2, result)
-
+        val companyName = " Amazon "
+        val result = appAnalyzer.getLargestAppSizeByCompanyName(apps, companyName)
+        // then check
+        assertEquals(apps[largestAmazonApp], result)
     }
 
-    @Test // 7-3
-    fun should_ReturnNumOfApps_When_CompanyNameContainsDots() {
-        // given a list of apps.
-        apps = setList()
-        // when the company name contains dots and the company name is Google.
-        val companyName = ".Meta platforms."
-        val result = appAnalyzer.findAppDevelopedByGivenCompany(apps, companyName)
-        // then check the number of apps developed by the company.
-        assertEquals(2, result)
-    }
-
-
-    @Test //7-4
-    fun should_ReturnNumApp_When_companyNameInUpperCase() {
+    @Test //7-3
+    fun should_ReturnLargestApp_When_companyNameInUpperCase() {
         //given app list
         apps = setList()
         // when the company name in upper case
-        val companyName = "META PLATFORMS"
-        val result = appAnalyzer.findAppDevelopedByGivenCompany(apps, companyName)
-        // then check the num developed by company name
-        assertEquals(2, result)
-
+        val companyName = "AMAZON"
+        val result = appAnalyzer.getLargestAppSizeByCompanyName(apps, companyName)
+        // then check
+        assertEquals(apps[largestAmazonApp], result)
     }
 
     @Test //7-5
-    fun Should_ReturnNumOfApps_When_CompanyNameIsNotFound() {
+    fun should_ReturnNull_When_CompanyNameIsNotFound() {
         //given  a list of app
-        apps=setList()
+        apps = setList()
         //when the  company name is not found
-        val companyName = "unkown"
-        val result = appAnalyzer.findAppDevelopedByGivenCompany(apps, companyName)
+        val companyName = "unknown"
+        val result = appAnalyzer.getLargestAppSizeByCompanyName(apps, companyName)
         //given check the num of app
-        assertEquals(0,result)
+        assertNull(result)
     }
 
 }

@@ -6,7 +6,7 @@ import kotlin.math.pow
 
 
 fun Int.calculatePercentage(divisor: Int): Double? {
-    return  if (divisor != 0) {
+    return if (divisor != 0) {
         String.format("%.1f", 100.0 * this.div(divisor.toDouble())).toDouble()
     } else {
         null
@@ -16,17 +16,21 @@ fun Int.calculatePercentage(divisor: Int): Double? {
 fun String.convertToDouble(): Double? = this.split(" ").first().toDoubleOrNull()
 
 fun String.stringToDate(): Date? {
-    return SimpleDateFormat(Constant.DATE_FORMAT).parse(this)
+    return if (this.isNotBlank()) {
+        SimpleDateFormat(Constant.DATE_FORMAT).parse(this)
+    } else {
+        null
+    }
 }
 
-fun String.megaByteConverter(): Long? {
+fun String.converterToByte(): Long? {
     var result = ""
-    for (c in this) {
-        result += if (c.isDigit())
-            c
-        else if (c == '.' && !result.contains("."))
-            c
-        else if (c == '.' && result.contains("."))
+    for (singleChar in this) {
+        result += if (singleChar.isDigit())
+            singleChar
+        else if (singleChar == '.' && !result.contains("."))
+            singleChar
+        else if (singleChar == '.' && result.contains("."))
             return null
         else break
     }
