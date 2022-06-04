@@ -11,5 +11,8 @@ data class App(
     var installs: Long,
     var requiresAndroid: Double?,
 ){
-    override fun toString() =  appName
+    override fun toString(): String {
+        return appName
+
+    }
 }
