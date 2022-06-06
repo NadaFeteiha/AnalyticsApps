@@ -8,7 +8,9 @@ class CSVReader {
     fun getTableRows(fileName: String): List<String>? {
         val tableRows = mutableListOf<String>()
         val fileNameWithSuffix =
-            if (!fileName.contains(Constant.SUFFIX_FILE_NAME)) fileName.plus(Constant.SUFFIX_FILE_NAME) else fileName
+            if (!fileName.contains(Constant.CSV_SUFFIX_FILE_NAME))
+                fileName.plus(Constant.CSV_SUFFIX_FILE_NAME)
+            else fileName
 
         File(fileNameWithSuffix).apply {
             if (this.exists()) {

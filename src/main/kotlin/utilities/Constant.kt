@@ -10,9 +10,23 @@ object Constant  {
         const val INSTALLS = 5
         const val REQUIRED_ANDROID = 7
     }
+
+    object ColumnName {
+        const val APP_NAME = "appName"
+        const val COMPANY = "company"
+        const val CATEGORY = "category"
+        const val UPDATE_DATE = "updated"
+        const val SIZE = "size"
+        const val INSTALLS = "installs"
+        const val REQUIRED_ANDROID = "requiresAndroid"
+    }
     const val KILO_BYTE = 1024.0
+
     const val FILE_NAME = "google_play"
-    const val SUFFIX_FILE_NAME=".csv"
+    const val CSV_SUFFIX_FILE_NAME=".csv"
+
+    const val JSON_SUFFIX_FILE_NAME=".json"
+
     const val DATE_FORMAT = "MMMM d yyyy"
     const val MIN_COMPARE_INT = 1
 }

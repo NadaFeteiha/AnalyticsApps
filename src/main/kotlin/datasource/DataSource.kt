@@ -3,6 +3,5 @@ package datasource
 import model.App
 
 interface DataSource {
-
-    fun getAllApps():List<App>
+    fun getAllApps(fileName:String):List<App>
 }
