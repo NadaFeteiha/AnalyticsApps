@@ -8,13 +8,13 @@ import utilities.converterToByte
 import utilities.stringToDate
 
 
-class JSONDataSource:DataSource {
+class JSONDataSource(private var fileName: String = Constant.FILE_NAME):DataSource {
+
+    private val fileReader by lazy { FileReader(fileName,Constant.JSON_SUFFIX_FILE_NAME) }
 
     override fun getAllApps(fileName: String): List<App> {
-        val jsonReader = FileReader(fileName,Constant.JSON_SUFFIX_FILE_NAME)
         val apps = mutableListOf<App>()
-        val jsonString= jsonReader.getStringInFile()
-
+        val jsonString= fileReader.getStringInFile()
         if (!jsonString.isNullOrBlank()){
             val jsonArray = JSONArray(jsonString)
             jsonArray.forEach{

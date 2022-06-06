@@ -149,7 +149,7 @@ internal class AppAnalyzerTest {
     @Test // 1-4
     fun should_ReturnNumOfAppsDevelopedByCompany_When_CompanyNameInMixedCase() {
         // given a list of apps.
-        apps = setList()
+        apps =  setList()
         // when the company name is in mixed case and the company name is Google.
         val companyName = "gOOgLE"
         val result = appAnalyzer.findAppDevelopedByGivenCompany(apps, companyName)

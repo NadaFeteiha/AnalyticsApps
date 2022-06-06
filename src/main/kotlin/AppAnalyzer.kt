@@ -25,7 +25,6 @@ class AppAnalyzer {
         }
     }
 
-
     fun findPercentageOfAppRunningOnSpecificAndroid(apps: List<App>, version: Double): Double? {
         return if (apps.isNotEmpty() && version >= Constant.MIN_COMPARE_INT) {
             apps.count { count -> count.requiresAndroid != null && count.requiresAndroid == version }

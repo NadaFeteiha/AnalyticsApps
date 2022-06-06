@@ -3,7 +3,7 @@ package datasource
 import utilities.Constant
 import java.io.File
 
-class CSVReader {
+class CSVReader{
 
     fun getTableRows(fileName: String): List<String>? {
         val tableRows = mutableListOf<String>()

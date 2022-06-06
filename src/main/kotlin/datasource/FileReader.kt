@@ -18,6 +18,7 @@ class FileReader(private var fileName: String, private val suffix:String) {
         }
     }
 
+    // should use this rather that CSVReader or change the name to this file
     fun getListOFLinesInFile(): List<String>?{
         val lines = mutableListOf<String>()
         File(fileName).apply {
