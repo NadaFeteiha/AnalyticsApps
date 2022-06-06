@@ -3,6 +3,7 @@ package model
 import java.util.*
 
 data class App(
+
     var appName: String,
     var company: String,
     var category: String,
