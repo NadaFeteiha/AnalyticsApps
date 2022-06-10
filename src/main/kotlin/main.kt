@@ -7,19 +7,20 @@ import utilities.Constant
 fun main() {
     val appAnalyzer = AppAnalyzer()
 
-    var dataSource: DataSource = JSONDataSource()
-    var appList = dataSource.getAllApps(Constant.FILE_NAME)
+    val jsonData: DataSource = JSONDataSource()
+    var appList = jsonData.getAllApps(Constant.FILE_NAME)
     println("Using JSON: ")
     printAnalyzer(appAnalyzer,appList)
 
-    dataSource = CSVDataSource()
-    appList = dataSource.getAllApps(Constant.FILE_NAME)
+    val csvData = CSVDataSource()
+    appList = csvData.getAllApps(Constant.FILE_NAME)
     println("Using CSV: ")
     printAnalyzer(appAnalyzer,appList)
 }
 
 
-fun printAnalyzer(appAnalyzer:AppAnalyzer, appList:List<App>){
+fun printAnalyzer(appAnalyzer:AppAnalyzer, appList:List<App>?){
+    if (appList != null){
     println("The numbers of apps develop by google \n${appAnalyzer.findAppDevelopedByGivenCompany(appList, "Google")} apps")
     println("-----------------------------------------------------------")
     println("The percentage of Medical apps is \n% ${appAnalyzer.findPercentageOfAppsByCategory(appList, "Medical")} ")
@@ -34,5 +35,4 @@ fun printAnalyzer(appAnalyzer:AppAnalyzer, appList:List<App>){
     println("-----------------------------------------------------------")
     println("The largest app developed by Meta Platforms Inc. is \n${appAnalyzer.getLargestAppSizeByCompanyName(appList, "Meta Platforms Inc.")}")
     println("=====================================================================")
-
-}
+    }}

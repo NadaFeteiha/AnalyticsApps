@@ -3,20 +3,21 @@ package datasource
 import model.App
 import utilities.*
 
-class CSVDataSource: DataSource {
+class CSVDataSource : DataSource {
 
     private val csvReader by lazy { CSVReader() }
 
-    override fun getAllApps(fileName:String): List<App> {
+    override fun getAllApps(fileName: String): List<App>? {
         val apps = mutableListOf<App>()
         csvReader.getTableRows(fileName)?.forEach { line ->
-            val app = parseStringToApp(line)
-            if(app!= null)
-                apps.add(app)
+            parseStringToApp(line).also { app ->
+                if (app != null) { apps.add(app) }
+            }
         }
         //because there is no unique field in DataSource to used as primary key;
         // Used 2 foreign key as a primary key (appName and company)
-        return apps.distinctBy { app -> Pair(app.appName, app.company) }
+        return if (apps.isNotEmpty()) { apps.distinctBy { app -> Pair(app.appName, app.company) }}
+        else { null }
     }
 
     private fun parseStringToApp(appStr: String): App? {
@@ -31,13 +32,10 @@ class CSVDataSource: DataSource {
                     updated = appFields[Constant.ColumnIndex.UPDATE_DATE].stringToDate(),
                     size = appFields[Constant.ColumnIndex.SIZE].converterToByte(),
                     installs = appFields[Constant.ColumnIndex.INSTALLS].toLong(),
-                    requiresAndroid = appFields[Constant.ColumnIndex.REQUIRED_ANDROID].convertToDouble(),
-                )
-            } else {
-                null
+                    requiresAndroid = appFields[Constant.ColumnIndex.REQUIRED_ANDROID].convertToDouble())
             }
-        } else {
-            return null
+            else { null }
         }
+        else { return null }
     }
 }

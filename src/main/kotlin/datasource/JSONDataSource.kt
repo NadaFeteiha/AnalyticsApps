@@ -1,4 +1,5 @@
 package datasource
+
 import model.App
 import org.json.JSONArray
 import org.json.JSONObject
@@ -8,41 +9,36 @@ import utilities.converterToByte
 import utilities.stringToDate
 
 
-class JSONDataSource(private var fileName: String = Constant.FILE_NAME):DataSource {
+class JSONDataSource(private var fileName: String = Constant.FILE_NAME) : DataSource {
 
-    private val fileReader by lazy { FileReader(fileName,Constant.JSON_SUFFIX_FILE_NAME) }
+    private val fileReader by lazy { FileReader(fileName, Constant.JSON_SUFFIX_FILE_NAME) }
 
-    override fun getAllApps(fileName: String): List<App> {
+    override fun getAllApps(fileName: String): List<App>? {
         val apps = mutableListOf<App>()
-        val jsonString= fileReader.getStringInFile()
-        if (!jsonString.isNullOrBlank()){
-            val jsonArray = JSONArray(jsonString)
-            jsonArray.forEach{
-                val jsonObject =  JSONObject(it.toString())
-                val app = parseJsonToApp(jsonObject)
-                if (app != null) {
-                    apps.add(app)
+        fileReader.getStringInFile().apply {
+            if (!this.isNullOrBlank()) {
+                JSONArray(this).onEach { any: Any? ->
+                    JSONObject(any.toString()).also { jsonObject ->
+                        parseJsonToApp(jsonObject)?.let { app -> apps.add(app) }
+                    }
                 }
             }
         }
-        //because there is no unique field in DataSource to used as primary key;
-        // Used 2 foreign key as a primary key (appName and company)
-        return apps.distinctBy { app -> Pair(app.appName, app.company) }
+        return if (apps.isNotEmpty()) { apps.distinctBy { app -> Pair(app.appName, app.company) } }
+        else { null }
     }
 
     private fun parseJsonToApp(jsonObject: JSONObject): App? {
         return if (!jsonObject.isEmpty) {
             App(
                 appName = jsonObject.getString(Constant.ColumnName.APP_NAME),
-                company =  jsonObject.getString(Constant.ColumnName.COMPANY),
+                company = jsonObject.getString(Constant.ColumnName.COMPANY),
                 category = jsonObject.getString(Constant.ColumnName.CATEGORY),
-                updated =  jsonObject.getString(Constant.ColumnName.UPDATE_DATE).stringToDate(),
+                updated = jsonObject.getString(Constant.ColumnName.UPDATE_DATE).stringToDate(),
                 size = jsonObject.getString(Constant.ColumnName.SIZE).converterToByte(),
-                installs = jsonObject.getInt(Constant.ColumnName.INSTALLS).toLong(),
-                requiresAndroid = jsonObject.getString(Constant.ColumnName.REQUIRED_ANDROID).convertToDouble(),
-            )
-        } else {
-            null
+                installs = jsonObject.getLong(Constant.ColumnName.INSTALLS),
+                requiresAndroid = jsonObject.getString(Constant.ColumnName.REQUIRED_ANDROID).convertToDouble())
         }
+        else { null }
     }
 }
