@@ -1,11 +1,16 @@
 import model.App
 import utilities.Constant
 import utilities.calculatePercentage
+import java.util.Date
 
 class AppAnalyzer {
 
     fun findAppDevelopedByGivenCompany(apps: List<App>, companyName: String): Int? {
-        return getAllAppsCompany(apps, companyName)?.size
+        return if (apps.isNotEmpty() && companyName.isNotEmpty()) {
+            apps.count { it.company.contains(companyName.trim(), true) }
+        } else {
+            null
+        }
     }
 
     fun findPercentageOfAppsByCategory(apps: List<App>, categoryName: String): Double? {
@@ -19,7 +24,7 @@ class AppAnalyzer {
 
     fun findOldestApp(apps: List<App>): App? {
         return if (apps.isNotEmpty()) {
-            apps.filterNot { app -> app.updated == null }.minByOrNull { selector -> selector.updated!! }
+            apps.filterNot{ it.updated == null }.minByOrNull { selector -> selector.updated!! }
         } else {
             null
         }
@@ -36,7 +41,8 @@ class AppAnalyzer {
 
     fun findLargestApps(app: List<App>, rankSize: Int): List<App>? {
         return if (app.isNotEmpty() && rankSize in Constant.MIN_COMPARE_INT..app.size) {
-            app.sortedByDescending { it.size }.toList().take(rankSize)
+            app.sortedByDescending { it.size }
+                .take(rankSize)
         } else {
             null
         }
@@ -46,7 +52,6 @@ class AppAnalyzer {
         return if (apps.isNotEmpty() && size in Constant.MIN_COMPARE_INT..apps.size) {
             apps.sortedByDescending { dataSorted -> dataSorted.installs }
                 .take(size)
-                .toList()
         } else {
             null
         }
@@ -54,7 +59,7 @@ class AppAnalyzer {
 
     fun getLargestAppSizeByCompanyName(apps: List<App>, companyName: String): App? {
         return getAllAppsCompany(apps, companyName)?.let {
-            findLargestApps(it, 1)?.first()
+            findLargestApps(it, Constant.MIN_COMPARE_INT)?.first()
         }
     }
 

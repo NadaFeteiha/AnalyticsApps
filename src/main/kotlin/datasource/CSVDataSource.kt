@@ -3,13 +3,13 @@ package datasource
 import model.App
 import utilities.*
 
-class CSVDataSource: DataSource {
+class CSVDataSource(private var fileName: String = Constant.FILE_NAME): DataSource {
 
-    private val csvReader by lazy { CSVReader() }
+    private val fileReader by lazy { FileReader(fileName,Constant.CSV_SUFFIX_FILE_NAME)  }
 
-    override fun getAllApps(fileName:String): List<App> {
+    override fun getAllApps(): List<App> {
         val apps = mutableListOf<App>()
-        csvReader.getTableRows(fileName)?.forEach { line ->
+        fileReader.getListOFLinesInFile()?.forEach { line ->
             val app = parseStringToApp(line)
             if(app!= null)
                 apps.add(app)

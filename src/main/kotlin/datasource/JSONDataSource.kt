@@ -2,17 +2,14 @@ package datasource
 import model.App
 import org.json.JSONArray
 import org.json.JSONObject
-import utilities.Constant
-import utilities.convertToDouble
-import utilities.converterToByte
-import utilities.stringToDate
+import utilities.*
 
 
 class JSONDataSource(private var fileName: String = Constant.FILE_NAME):DataSource {
 
     private val fileReader by lazy { FileReader(fileName,Constant.JSON_SUFFIX_FILE_NAME) }
 
-    override fun getAllApps(fileName: String): List<App> {
+    override fun getAllApps(): List<App> {
         val apps = mutableListOf<App>()
         val jsonString= fileReader.getStringInFile()
         if (!jsonString.isNullOrBlank()){
@@ -38,7 +35,7 @@ class JSONDataSource(private var fileName: String = Constant.FILE_NAME):DataSour
                 category = jsonObject.getString(Constant.ColumnName.CATEGORY),
                 updated =  jsonObject.getString(Constant.ColumnName.UPDATE_DATE).stringToDate(),
                 size = jsonObject.getString(Constant.ColumnName.SIZE).converterToByte(),
-                installs = jsonObject.getInt(Constant.ColumnName.INSTALLS).toLong(),
+                installs = jsonObject.getLong(Constant.ColumnName.INSTALLS),
                 requiresAndroid = jsonObject.getString(Constant.ColumnName.REQUIRED_ANDROID).convertToDouble(),
             )
         } else {
