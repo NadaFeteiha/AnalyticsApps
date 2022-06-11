@@ -2,17 +2,14 @@ package datasource
 import model.App
 import org.json.JSONArray
 import org.json.JSONObject
-import utilities.Constant
-import utilities.convertToDouble
-import utilities.converterToByte
-import utilities.stringToDate
+import utilities.*
 
 
 class JSONDataSource(private var fileName: String = Constant.FILE_NAME):DataSource {
 
     private val fileReader by lazy { FileReader(fileName,Constant.JSON_SUFFIX_FILE_NAME) }
 
-    override fun getAllApps(fileName: String): List<App> {
+    override fun getAllApps(): List<App> {
         val apps = mutableListOf<App>()
         fileReader.getStringInFile().apply {
             if (!this.isNullOrBlank()) {
@@ -23,8 +20,7 @@ class JSONDataSource(private var fileName: String = Constant.FILE_NAME):DataSour
                 }
             }
         }
-        return if (apps.isNotEmpty()) { apps.distinctBy { app -> Pair(app.appName, app.company) } }
-        else { null }
+        return apps.distinctBy { app -> Pair(app.appName, app.company) }
     }
 
     private fun parseJsonToApp(jsonObject: JSONObject): App? {

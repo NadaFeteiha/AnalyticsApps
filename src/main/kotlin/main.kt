@@ -8,12 +8,12 @@ fun main() {
     val appAnalyzer = AppAnalyzer()
 
     val jsonData: DataSource = JSONDataSource()
-    var appList = jsonData.getAllApps(Constant.FILE_NAME)
+    var appList = jsonData.getAllApps()
     println("Using JSON: ")
     printAnalyzer(appAnalyzer,appList)
 
     val csvData = CSVDataSource()
-    appList = csvData.getAllApps(Constant.FILE_NAME)
+    appList = csvData.getAllApps()
     println("Using CSV: ")
     printAnalyzer(appAnalyzer,appList)
 }
